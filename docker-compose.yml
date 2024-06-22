@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  httpd:
+    image: php:8.1.2-apache
+    container_name: httpd
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - type: bind
+        source: /github/kknock
+        target: /var/www/html
+      - type: bind
+        source: ./config/apache/httpd.conf
+        target: /etc/apache2/sites-available/000-default.conf
+      - type: bind
+        source: ./config/php/php.ini
+        target: /usr/local/etc/php/php.ini
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0.36
+    container_name: mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: my_database
+      MYSQL_USER: my_user
+      MYSQL_PASSWORD: 1q2w3e4r
+      TZ: Asia/Seoul
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+
+       
