@@ -5,30 +5,34 @@ if (!isset($_POST['joinName']) || !isset($_POST['joinId']) || !isset($_POST['joi
     echo "window.location.replace('kknock-join.php');</script>";
     exit;
 }
-$conn = mysqli_connect('localhost', 'ybell', 'gungail127', 'kknock_db');
 
-$join_name = mysqli_real_escape_string($conn, $_POST['joinName']);
-$join_id = mysqli_real_escape_string($conn, $_POST['joinId']);
-$join_pw = mysqli_real_escape_string($conn, $_POST['joinPw']);
-$join_pw2 = mysqli_real_escape_string($conn, $_POST['joinPw2']);
+$join_name = $_POST['joinName'];
+$join_id = $_POST['joinId'];
+$join_pw = password_hash($_POST['joinPw'], PASSWORD_DEFAULT); // 비밀번호 해시화
+
+$conn = mysqli_connect('localhost', 'ybell', 'gungail127', 'kknock_db');
 
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-// 회원 가입 쿼리 실행
-$sql = "INSERT INTO users (username, user_id, user_password, created_at) VALUES ('$join_name', '$join_id', '$join_pw', NOW())";
-$result = mysqli_query($conn, $sql);
+// 신규 회원정보 삽입
+$sql = "INSERT INTO users (username, user_id, user_password, created_at) VALUES (?, ?, ?, now())";
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "sss", $join_name, $join_id, $join_pw);
+$res = mysqli_stmt_execute($stmt);
 
-if ($result) {
-    echo "<script>alert('회원가입이 완료되었습니다.');</script>";
-    header("Location: kknock-login.php");
+if ($res) {
+    echo "<script>alert('회원가입이 완료되었습니다.');";
+    echo "window.location.replace('kknock-login.php');</script>";
     exit;
 } else {
-    echo "<script>alert('저장에 문제가 생겼습니다. 관리자에게 문의해주세요.');</script>";
+    echo "<script>alert('저장에 문제가 생겼습니다. 관리자에게 문의해주세요.');";
     echo mysqli_error($conn);
+    echo "</script>";
 }
 
+mysqli_stmt_close($stmt);
 mysqli_close($conn);
 ?>
 <meta http-equiv="refresh" content="0;url=kknock-main.php">
