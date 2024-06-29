@@ -1,18 +1,24 @@
-# 베이스 이미지 설정
+# Use the official PHP image as base
 FROM php:7.4-apache
 
-# Apache 설정 파일 복사
-COPY config/apache/httpd.conf /etc/apache2/sites-available/000-default.conf
+# Install necessary extensions and tools
+RUN docker-php-ext-install mysqli pdo pdo_mysql && \
+    apt-get update && \
+    apt-get install -y libpng-dev libjpeg-dev && \
+    docker-php-ext-configure gd --with-jpeg && \
+    docker-php-ext-install gd
 
-# PHP 설정 파일 복사
-COPY config/php/php.ini /usr/local/etc/php
+# Create the directory and copy project files to the container
+RUN mkdir -p /github/kknock
+COPY . /github/kknock/
 
-# 필요한 패키지 설치 (예: MySQL 확장)
-RUN docker-php-ext-install mysqli
+# Update the Apache configuration
+RUN sed -i 's|/var/www/html|/github/kknock|g' /etc/apache2/sites-available/000-default.conf
+RUN sed -i 's|/var/www/html|/github/kknock|g' /etc/apache2/apache2.conf
 
-# Apache 모듈 활성화 (필요 시)
-RUN a2enmod rewrite
+# Set working directory
+WORKDIR /github/kknock
 
-# 포트 설정
+# Expose port 80
 EXPOSE 80
 

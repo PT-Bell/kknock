@@ -1,26 +1,23 @@
 <?php
-include 'db_connection.php';
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-if (isset($_GET["userid"])) {
-    $uid = $_GET["userid"];
+$conn = mysqli_connect('localhost', 'ybell', 'gungail127', 'kknock_db');
 
-    // 준비된 문을 사용한 안전한 쿼리
-    $stmt = $conn->prepare("SELECT * FROM member WHERE loginId = ?");
-    $stmt->bind_param("s", $uid);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows == 0) {
-        echo "<span style='color:blue;'>$uid</span> 는 사용 가능한 아이디입니다.";
-        echo '<p><input type="button" value="이 ID 사용" onclick="opener.parent.decide(); window.close();"></p>';
-    } else {
-        echo "<span style='color:red;'>$uid</span> 는 중복된 아이디입니다.";
-        echo '<p><input type="button" value="다른 ID 사용" onclick="opener.parent.change(); window.close();"></p>';
-    }
-
-    $stmt->close();
-    $conn->close();
-} else {
-    echo "<script>alert('잘못된 접근입니다.'); window.close();</script>";
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
 }
+
+$uid = mysqli_real_escape_string($conn, $_GET["userid"]);
+
+$sql = "SELECT * FROM users where user_id='$uid'";
+$result = mysqli_query($conn, $sql);
+
+if (!$result || mysqli_num_rows($result) == 0) {
+    echo "<script>window.opener.decide(true); window.close();</script>";
+} else {
+    echo "<script>window.opener.decide(false); window.close();</script>";
+}
+
+mysqli_close($conn);
 ?>

@@ -1,13 +1,13 @@
 <?php
     $userId = $_POST['userId'];
     $userPw = $_POST['userPw'];
-    $conn= mysqli_connect('localhost', 'bell', '1207', 'kknock-web');
-    $sql = "SELECT * FROM member where loginId='$userId' and loginPw=md5'$userPw'";
+    $conn= mysqli_connect('localhost', 'ybell', 'gungail127', 'kknock_db');
+    $sql = "SELECT * FROM users where user_id='$userId' and user_password='$userPw'";
     $res = mysqli_fetch_array(mysqli_query($conn,$sql));
     if($res){
         session_start();
-        $_SESSION['userId'] = $res['loginId'];
-        $_SESSION['userName'] = $res['name'];
+        $_SESSION['userId'] = $res['user_id'];
+        $_SESSION['userName'] = $res['username'];
         echo "<script>alert('로그인에 성공했습니다!');";
         echo "window.location.replace('kknock-main.php');</script>";
         exit;

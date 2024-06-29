@@ -9,9 +9,9 @@
         <h2>로그인</h2>
         <?php 
             if(!isset($_SESSION['userId']) || !isset($_SESSION['userName'])) { ?>
-                <form method="post" action="login_ok.php" autocomplete="off">
-                    <p>아이디: <input type="text" name="user-id" required></p>
-                    <p>비밀번호: <input type="password" name="user-pw" required></p>
+                <form method="post" action="kknock-login-ok.php" autocomplete="off">
+                    <p>아이디: <input type="text" name="userId" required></p>
+                    <p>비밀번호: <input type="password" name="userPw" required></p>
                     <p><input type="submit" value="로그인"></p>
                 </form>
                 <small><a href="kknock-join.php">처음 오셨나요?</a><small>
