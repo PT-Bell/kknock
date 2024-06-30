@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Main</title>
+    <link href="/kknock-header.css" rel="stylesheet">
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const userCardTemplate = document.querySelector("[data-user-template]");
@@ -56,42 +57,6 @@
         });
     </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0 auto;
-            padding: 20px;
-            width: 960px;
-            height: 100vh;
-            border-left: 1px solid gray;
-            border-right: 1px solid gray;
-            background-color: #f8f9fa;
-        }
-        header {
-            width: 100%;
-            height: 60px;
-            border-bottom: 1px solid gray;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
-        header > h1 {
-            text-align: center;
-            line-height: 60px;
-            font-size: 24px;
-            color: #343a40;
-        }
-        nav a {
-            margin: 0 10px;
-            text-decoration: none;
-            color: black;
-        }
         .search-wrapper {
             margin-bottom: 20px;
         }
@@ -153,9 +118,10 @@
     <header>
         <h1>MAIN</h1>
         <nav>
+            <a href="kknock-main.php">Main</a>
             <a href="kknock-board.php">Board</a>
             <a href="kknock-free-board.php">Free Board</a>
-            <a href="kknock-QnA-board.php">QnA Board</a>
+            <a href="kknock-qna-board.php">QnA Board</a>
         </nav>
     </header>
     <?php

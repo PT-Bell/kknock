@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <h1>Board</h1>
+        <h1>QnA Board</h1>
         <nav>
             <a href="kknock-main.php">Main</a>
             <a href="kknock-board.php">Board</a>
@@ -29,10 +29,10 @@
             </select>
             <button type="submit">검색</button>
         </form>
-        <div class="top"><h2>게시판</h2></div>
+        <div class=top><h2>게시판</h2></div>
         <button class="no" onclick="window.location.href='kknock-write.php?board_type=general'">글쓰기</button>
-        <div class="main-board">
-            <table class="middle">
+        <div class=main-board>
+            <table class=middle>
                 <thead>
                     <tr align="center">
                         <th width="100">
@@ -73,7 +73,7 @@
                         $order = 'desc';
                     }
 
-                    $sql = "SELECT * FROM general_board ORDER BY $sort $order";
+                    $sql = "SELECT * FROM qna_board ORDER BY $sort $order";
                     $res = mysqli_query($conn, $sql);
 
                     while($row = mysqli_fetch_array($res)) { ?>

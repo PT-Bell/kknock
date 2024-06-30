@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.container {
+    max-width: 960px;
+    height: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+td {
+    background-color: #fff;
+}
+
+tr:hover {
+    background-color: #f2f2f2;
+}
+
+.no-results {
+    text-align: center;
+    margin-top: 20px;
+}
+.main-board {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+.middle {
+    width: 100%;
+    border-collapse: collapse;
+}
+.middle th, .middle td {
+    border: 1px solid black;
+    padding: 0;
+    text-align: center;
+}
+.middle th {
+    position: relative;
+}
+.middle th a {
+    text-decoration: none;
+    color: black;
+    position: relative;
+    padding-right: 20px;
+}
+.sort-indicator {
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+    color: grey;
+}
+.sort-indicator.active {
+    color: black;
+}
+.sort-indicator::after {
+    content: '▲';
+}
+.sort-indicator.desc::after {
+    content: '▼';
+}
