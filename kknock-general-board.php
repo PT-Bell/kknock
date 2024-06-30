@@ -13,7 +13,7 @@
         <h1>Board</h1>
         <nav>
             <a href="kknock-main.php">Main</a>
-            <a href="kknock-board.php">Board</a>
+            <a href="kknock-general-board.php">Board</a>
             <a href="kknock-free-board.php">Free Board</a>
             <a href="kknock-qna-board.php">QnA Board</a>
         </nav>
@@ -37,7 +37,7 @@
                     <tr align="center">
                         <th width="100">
                             <a href="javascript:void(0);" onclick="toggleSort('<?= $_GET['sort'] ?>', '<?= $_GET['order'] ?>', 'id')">
-                                ID <span class="sort-indicator <?= ($_GET['sort'] == 'id') ? ($_GET['order'] == 'asc' ? '' : 'desc') : '' ?>"></span>
+                                ID <span class="sort-indicator <?= ($_GET['sort'] == 'id') ? ($_GET['order'] == 'asc' ? '' : 'desc') : '' ?>"></span>                        
                             </a>
                         </th>
                         <th width="460">
@@ -79,7 +79,7 @@
                     while($row = mysqli_fetch_array($res)) { ?>
                     <tr align="center">
                         <td><?php echo $row['id']; ?></td>
-                        <td><a href="kknock-board-view.php?id=<?=$row['id']?>"><?php echo $row['title']; ?></a></td>
+                        <td><a href="kknock-board-view.php?id=<?=$row['id']?>&board_type=general"><?php echo $row['title']; ?></a></td>
                         <td><?php echo $row['name']; ?></td>
                         <td><?php echo $row['written']; ?></td>
                     </tr>

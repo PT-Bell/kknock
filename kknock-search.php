@@ -14,7 +14,7 @@ if (isset($_GET['search']) && isset($_GET['criteria'])) {
     $order = isset($_GET['order']) ? $_GET['order'] : 'asc';
 
     // 정렬 기준이 유효한 값인지 확인합니다.
-    $allowed_sorts = ['id', 'title', 'name', 'written'];
+    $allowed_sorts = ['board', 'id', 'title', 'name', 'written'];
     if (!in_array($sort, $allowed_sorts)) {
         $sort = 'id';
     }
@@ -28,21 +28,28 @@ if (isset($_GET['search']) && isset($_GET['criteria'])) {
     $results = array();
 
     // 각 게시판에서 검색을 수행하고 결과를 $results 배열에 추가합니다.
-    $tables = [
-        'general_board' => '일반 게시판',
-        'free_board' => '자유 게시판',
-        'qna_board' => '질의응답 게시판'
+    $queries = [
+        "SELECT '일반 게시판' AS board, id, title, writer, name, written, content, file FROM general_board WHERE $criteria LIKE '%$search%'",
+        "SELECT '자유 게시판' AS board, id, title, writer, name, written, content, file FROM free_board WHERE $criteria LIKE '%$search%'",
+        "SELECT '질의응답 게시판' AS board, id, title, writer, name, written, content, file FROM qna_board WHERE $criteria LIKE '%$search%'"
     ];
 
-    foreach ($tables as $table => $board) {
-        $sql = "SELECT '$board' AS board, id, title, writer, name, written, content, file FROM $table WHERE $criteria LIKE '%$search%' ORDER BY $sort $order";
-        $result = mysqli_query($conn, $sql);
+    foreach ($queries as $query) {
+        $result = mysqli_query($conn, $query);
         if ($result && mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 $results[] = $row;
             }
         }
     }
+
+    // 결과를 정렬합니다.
+    usort($results, function($a, $b) use ($sort, $order) {
+        if ($a[$sort] == $b[$sort]) {
+            return 0;
+        }
+        return ($order == 'asc' ? ($a[$sort] < $b[$sort]) : ($a[$sort] > $b[$sort])) ? -1 : 1;
+    });
 
     mysqli_close($conn);
 }
@@ -62,12 +69,11 @@ if (isset($_GET['search']) && isset($_GET['criteria'])) {
         <h1>게시판 검색 결과</h1>
         <nav>
             <a href="kknock-main.php">Main</a>
-            <a href="kknock-board.php">Board</a>
+            <a href="kknock-general-board.php">Board</a>
             <a href="kknock-free-board.php">Free Board</a>
             <a href="kknock-qna-board.php">QnA Board</a>
         </nav>
     </header>
-
     <div class="container">
         <form method="GET" action="kknock-search.php">
             <label for="search">게시글 검색:</label>
@@ -81,15 +87,15 @@ if (isset($_GET['search']) && isset($_GET['criteria'])) {
         </form>
         <?php if (isset($_GET['search']) && !empty($results)): ?>
             <h2>검색 결과</h2>
-            <table class=middle>
+            <table class="middle">
                 <thead>
                     <tr align="center">
-                        <th width="100">
+                        <th width="150">
                             <a href="?search=<?= htmlspecialchars($search) ?>&criteria=<?= htmlspecialchars($criteria) ?>&sort=board&order=<?= ($sort == 'board' && $order == 'asc') ? 'desc' : 'asc' ?>">
                                 게시판 <span class="sort-indicator <?= ($sort == 'board') ? ($order == 'asc' ? 'asc' : 'desc') : '' ?>"></span>
                             </a>
                         </th>
-                        <th width="460">
+                        <th width="410">
                             <a href="?search=<?= htmlspecialchars($search) ?>&criteria=<?= htmlspecialchars($criteria) ?>&sort=title&order=<?= ($sort == 'title' && $order == 'asc') ? 'desc' : 'asc' ?>">
                                 제목 <span class="sort-indicator <?= ($sort == 'title') ? ($order == 'asc' ? 'asc' : 'desc') : '' ?>"></span>
                             </a>
@@ -111,13 +117,13 @@ if (isset($_GET['search']) && isset($_GET['criteria'])) {
                         <tr align="center">
                             <td><?php echo htmlspecialchars($row['board']); ?></td>
                             <td><a href="kknock-board-view.php?id=<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['title']); ?></a></td>
-                            <td><?php echo htmlspecialchars($row['writer']) . " (" . htmlspecialchars($row['name']) . ")"; ?></td>
+                            <td><?php echo htmlspecialchars($row['name']); ?></td>
                             <td><?php echo htmlspecialchars($row['written']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            <?php elseif (isset($_GET['search']) && empty($results)): ?>
+        <?php elseif (isset($_GET['search']) && empty($results)): ?>
             <div class="no-results">
                 <p>검색 결과가 없습니다.</p>
             </div>

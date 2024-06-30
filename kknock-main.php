@@ -119,7 +119,7 @@
         <h1>MAIN</h1>
         <nav>
             <a href="kknock-main.php">Main</a>
-            <a href="kknock-board.php">Board</a>
+            <a href="kknock-general-board.php">Board</a>
             <a href="kknock-free-board.php">Free Board</a>
             <a href="kknock-qna-board.php">QnA Board</a>
         </nav>
