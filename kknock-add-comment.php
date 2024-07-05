@@ -24,7 +24,8 @@ $comment = mysqli_real_escape_string($conn, $_POST['comment']);
 $user_id = $_SESSION['userId'];
 $user_name = $_SESSION['userName'];
 
-$sql = "INSERT INTO comments (post_id, board_type, user_id, user_name, comment) VALUES ('$post_id', '$board_type', '$user_id', '$user_name', '$comment')";
+$sql = "INSERT INTO comments (post_id, board_type, user_id, user_name, comment) 
+        VALUES ('$post_id', '$board_type', '$user_id', '$user_name', '$comment')";
 if (mysqli_query($conn, $sql)) {
     echo "<script>alert('댓글이 작성되었습니다.'); window.location.replace('kknock-board-view.php?id=$post_id&board_type=$board_type');</script>";
 } else {

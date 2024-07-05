@@ -52,93 +52,7 @@ if ($result && mysqli_num_rows($result) > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($row['title']); ?> - 게시글 보기</title>
     <link href="/kknock-header.css" rel="stylesheet">
-    <style>
-        .container {
-            max-width: 960px;
-            height: 100%;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .post {
-            padding: 20px;
-            height: 700px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .post-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .post-meta {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        .post-content {
-            line-height: 1.6;
-            height: 500px;
-        }
-
-        .post-actions {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .post-actions button {
-            margin: 0 5px;
-            padding: 10px 20px;
-            font-size: 14px;
-        }
-
-        .file-download {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .file-download a {
-            text-decoration: none;
-            color: blue;
-        }
-
-        .comment-section {
-            margin-top: 50px;
-        }
-
-        .comment-form {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 18px;
-        }
-
-        .comment-list {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .comment-list li {
-            border-bottom: 1px solid #ddd;
-            padding: 10px 0;
-        }
-
-        textarea {
-            width: 800px;
-        }
-    </style>
+    <link href="/kknock-board-view.css" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -195,8 +109,13 @@ if ($result && mysqli_num_rows($result) > 0) {
                         <small><?php echo $comment['created_at']; ?></small>
                         <?php if ($_SESSION['userId'] == $comment['user_id']): ?>
                             <form action="kknock-delete-comment.php" method="post" style="display:inline;">
+                                <!-- 댓글 고유id -->
                                 <input type="hidden" name="comment_id" value="<?php echo $comment['id']; ?>">
+
+                                <!-- 게시판 고유id -->
                                 <input type="hidden" name="post_id" value="<?php echo $id; ?>">
+
+                                <!-- 게시판 분류(general, free, qna) -->
                                 <input type="hidden" name="board_type" value="<?php echo $board_type; ?>">
                                 <button type="submit">삭제</button>
                             </form>
